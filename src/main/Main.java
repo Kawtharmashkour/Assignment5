@@ -1,7 +1,11 @@
 package main;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 public class Main {
 
@@ -37,15 +41,56 @@ public class Main {
 		System.out.println("\nPrint using generic method");
 		genericPrinter(wordList);
 		genericPrinter(pList);
-//			   - Write a method that takes an ArrayList of any type and prints its elements.
-//			   - Test this method with both `wordList` and the ArrayList of `Pair` instances.
 
-
+		//Part2
+//		try {
+//			PrintWriter pw = new PrintWriter(new FileOutputStream("input.txt"));
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		//1. Read File:
+		System.out.println("\nFile content: ");
+		try {
+			IOfileManager.readFromFile("input.txt");
+		} catch (IOException e) {
+			
+			System.out.println("\nError: "+ e.getMessage());
+		}
+		
+		//2.
+		System.out.println("Total no. of characters: "+IOfileManager.totalCharacterCount("input.txt"));
+		
+		//3.
+		ArrayList<String> myList = new ArrayList<String>();
+		myList.addAll(Arrays.asList("Hello, this is line 1.","Java File I/O is interesting!","End of the assignment."));
+		
+		try {
+			IOfileManager.writeToFile("output.txt", myList);
+		} catch (IOException e) {
+			System.out.println("Error: "+ e.getMessage());
+		}
+		
+		//4. Append to File:
+		
+		ArrayList<String> appendList = new ArrayList<String>();
+		appendList.addAll(Arrays.asList("Appending new line.","File I/O without buffers."));
+		IOfileManager.appendToFile("output.txt", appendList); 
+		System.out.println("\nList appended to the file.");
+		
+		//5.
+		IOfileManager.writeToFileWithoutBuffer("custom.txt", "Kawthar");
 	}
 	
 	//Generic method
 	public static <T> void genericPrinter(ArrayList<T> list) {
-		System.out.println("The list is:\n"+ list);
+		try {
+            for (T element : list) {
+                System.out.println(element);
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
 	}
 
 }
